@@ -16,6 +16,7 @@ init.defaultbranch=main
 user.name=Rajapandu-M
 user.email=rajapandu2024@gmail.com
 color.ui=auto
+credential.helper=store
 core.repositoryformatversion=0
 core.filemode=false
 core.bare=false
