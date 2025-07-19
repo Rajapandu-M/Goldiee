@@ -5,7 +5,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -14,6 +16,16 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 public class ForegroundService extends Service {
+    private BroadcastReceiver reciver;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        reciver = new BroadcatsReciver();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        registerReceiver(reciver,filter);
+
+    }
+
     @SuppressLint("ForegroundServiceType")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -35,16 +47,18 @@ public class ForegroundService extends Service {
 
             startForeground(1,notification);
 
-            ShowLockScreenActivity();
+
         }
         Toast.makeText(this, "Service Started Look Up", Toast.LENGTH_SHORT).show();
      return START_NOT_STICKY;
     }
 
-    private void ShowLockScreenActivity() {
-        Intent inten = new Intent(this, LockscreenActivity.class);
-        inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(inten);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (reciver!=null){
+            unregisterReceiver(reciver);
+        }
     }
 
     @Nullable
