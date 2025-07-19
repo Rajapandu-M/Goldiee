@@ -34,9 +34,17 @@ public class ForegroundService extends Service {
                     .build();
 
             startForeground(1,notification);
+
+            ShowLockScreenActivity();
         }
         Toast.makeText(this, "Service Started Look Up", Toast.LENGTH_SHORT).show();
      return START_NOT_STICKY;
+    }
+
+    private void ShowLockScreenActivity() {
+        Intent inten = new Intent(this, LockscreenActivity.class);
+        inten.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(inten);
     }
 
     @Nullable
